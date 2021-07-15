@@ -20,7 +20,7 @@ wget -O terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSI
 #rm terraform.zip
 
 # Check out the MLZ Repo
-git clone https://github.com/Azure/missionlz.git
+git clone --quiet https://github.com/Azure/missionlz.git
 cd ./missionlz/src/scripts
 
 # Assemble argument list
@@ -34,4 +34,5 @@ if [[ ${no_sentinel} -ne "" ]]; then
     deploy_command+=" --no-sentinel"
 fi
 
+echo "${deploy_command}"
 eval "${deploy_command}"
