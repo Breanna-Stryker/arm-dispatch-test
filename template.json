@@ -4,7 +4,7 @@
   "parameters": {
     "subscription_id": {
       "type": "string",
-      "defaultValue": "[subscription().id]",
+      "defaultValue": "[subscription().subscriptionId]",
       "metadata": {
         "description": "Subscription ID for MissionLZ resources (defaults to context subscription)"
       }
@@ -28,41 +28,6 @@
       "defaultValue": "[concat('mlz', parameters('utcValue'))]",
       "metadata": {
         "description": "The location that you're deploying to"
-      }
-    },
-    "hub_sub_id": {
-      "type": "string",
-      "defaultValue": "[parameters('subscription_id')]",
-      "metadata": {
-        "description": "The subscription ID for the hub network and resources (defaults to subscription_id)"
-      }
-    },
-    "tier0_sub_id": {
-      "type": "string",
-      "defaultValue": "[parameters('subscription_id')]",
-      "metadata": {
-        "description": "The subscription ID for tier 0 network and resources (defaults to subscription_id)"
-      }
-    },
-    "tier1_sub_id": {
-      "type": "string",
-      "defaultValue": "[parameters('subscription_id')]",
-      "metadata": {
-        "description": "The subscription ID for tier 1 network and resources (defaults to subscription_id)"
-      }
-    },
-    "tier2_sub_id": {
-      "type": "string",
-      "defaultValue": "[parameters('subscription_id')]",
-      "metadata": {
-        "description": "The subscription ID for tier 0 network and resources (defaults to subscription_id)"
-      }
-    },
-    "tier3_sub_id": {
-      "type": "string",
-      "defaultValue": "[parameters('subscription_id')]",
-      "metadata": {
-        "description": "The subscription ID for tier 0 network and resources (defaults to subscription_id)"
       }
     },
     "no_bastion": {
@@ -90,6 +55,18 @@
       "name": "[concat(parameters('utcValue'), 'mlzuserassigned')]",
       "apiVersion": "2018-11-30",
       "location": "[resourceGroup().location]"
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-04-01-preview",
+      "name": "[concat(parameters('utcValue'), 'mlzsubrole')]",
+      "properties": {
+          "roleDefinitionId": "[concat('/subscriptions/', parameters('subscription_id'), '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+          "principalId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', concat(parameters('utcValue'), 'mlzuserassigned'))]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', concat(parameters('utcValue'), 'mlzuserassigned'))]"
+      ]
     },
     {
       "type": "Microsoft.Resources/deploymentScripts",
@@ -162,7 +139,8 @@
         "retentionInterval": "P1D"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', concat(parameters('utcValue'), 'mlzuserassigned'))]"
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', concat(parameters('utcValue'), 'mlzuserassigned'))]",
+        "[resourceId('Microsoft.Authorization/roleAssignments', concat(parameters('utcValue'), 'mlzsubrole'))]"
       ]
     }
   ]
