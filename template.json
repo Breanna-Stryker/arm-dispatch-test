@@ -9,7 +9,7 @@
         "description": "Subscription ID for MissionLZ resources (defaults to context subscription)"
       }
     },
-    "location": {
+    "mlz_location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
       "metadata": {
@@ -34,35 +34,35 @@
       "type": "string",
       "defaultValue": "[parameters('subscription_id')]",
       "metadata": {
-        "description": "subscription ID for the hub network and resources (defaults to the subscription id)"
+        "description": "The subscription ID for the hub network and resources (defaults to subscription_id)"
       }
     },
     "tier0_sub_id": {
       "type": "string",
       "defaultValue": "[parameters('subscription_id')]",
       "metadata": {
-        "description": "The location that you're deploying to"
+        "description": "The subscription ID for tier 0 network and resources (defaults to subscription_id)"
       }
     },
     "tier1_sub_id": {
       "type": "string",
       "defaultValue": "[parameters('subscription_id')]",
       "metadata": {
-        "description": "The location that you're deploying to"
+        "description": "The subscription ID for tier 1 network and resources (defaults to subscription_id)"
       }
     },
     "tier2_sub_id": {
       "type": "string",
       "defaultValue": "[parameters('subscription_id')]",
       "metadata": {
-        "description": "The location that you're deploying to"
+        "description": "The subscription ID for tier 0 network and resources (defaults to subscription_id)"
       }
     },
     "tier3_sub_id": {
       "type": "string",
       "defaultValue": "[parameters('subscription_id')]",
       "metadata": {
-        "description": "The location that you're deploying to"
+        "description": "The subscription ID for tier 0 network and resources (defaults to subscription_id)"
       }
     },
     "no_bastion": {
@@ -119,7 +119,7 @@
           },
            {
             "name": "mlz_location",
-            "value": "[parameters('location')]"
+            "value": "[parameters('mlz_location')]"
           },
            {
             "name": "tf_environment",
