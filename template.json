@@ -157,7 +157,7 @@
             "value": "[parameters('no_sentinel')]"
           }
         ],
-        "primaryScriptUri": "https://raw",
+        "primaryScriptUri": "https://raw.githubusercontent.com/Breanna-Stryker/arm-dispatch-test/main/arm_deploy.sh",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
       },
