@@ -11,7 +11,7 @@
     },
     "mlz_location": {
       "type": "string",
-      "defaultValue": "[resourceGroup().location]",
+      "defaultValue": "eastus]",
       "metadata": {
         "description": "The location that you're deploying to, defaults to selected resource group location."
       }
@@ -49,23 +49,28 @@
       "defaultValue": "[utcNow()]"
     }
   },
+  "variables": {
+    "identityName": "[concat(parameters('utcValue'), 'mlzuserassigned')]",
+    "quickstartRoleAssignmentId": "[guid(concat(subscription().id, 'contributor'))]",
+  },
   "resources": [
     {
       "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
-      "name": "[concat(parameters('utcValue'), 'mlzuserassigned')]",
+      "name": "[variables('identityName')]",
       "apiVersion": "2018-11-30",
       "location": "[resourceGroup().location]"
     },
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2020-04-01-preview",
-      "name": "[concat(parameters('utcValue'), 'mlzsubrole')]",
+      "name": "[variables('quickstartRoleAssignmentId')]",
       "properties": {
           "roleDefinitionId": "[concat('/subscriptions/', parameters('subscription_id'), '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-          "principalId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', concat(parameters('utcValue'), 'mlzuserassigned'))]"
+          "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName')),'2018-11-30').principalId]",
+          "principalType": "ServicePrincipal"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', concat(parameters('utcValue'), 'mlzuserassigned'))]"
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName'))]"
       ]
     },
     {
@@ -106,25 +111,6 @@
             "name": "mlz_env_name",
             "value": "[parameters('mlz_env_name')]"
           },
-           {
-            "name": "hub_sub_id",
-            "value": "[parameters('hub_sub_id')]"
-          }, {
-            "name": "tier0_sub_id",
-            "value": "[parameters('tier0_sub_id')]"
-          },
-           {
-            "name": "tier1_sub_id",
-            "value": "[parameters('tier1_sub_id')]"
-          },
-            {
-            "name": "tier2_sub_id",
-            "value": "[parameters('tier2_sub_id')]"
-          },
-            {
-            "name": "tier3_sub_id",
-            "value": "[parameters('tier3_sub_id')]"
-          },
             {
             "name": "no_bastion",
             "value": "[parameters('no_bastion')]"
@@ -139,8 +125,8 @@
         "retentionInterval": "P1D"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', concat(parameters('utcValue'), 'mlzuserassigned'))]",
-        "[resourceId('Microsoft.Authorization/roleAssignments', concat(parameters('utcValue'), 'mlzsubrole'))]"
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName'))]",
+        "[resourceId('Microsoft.Authorization/roleAssignments', variables('quickstartRoleAssignmentId'))]"
       ]
     }
   ]
