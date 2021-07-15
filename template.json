@@ -2,6 +2,83 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "subscription_id": {
+      "type": "string",
+      "defaultValue": "[subscription().id]",
+      "metadata": {
+        "description": "Subscription ID for MissionLZ resources (defaults to context subscription)"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "The location that you're deploying to, defaults to selected resource group location."
+      }
+    },
+    "tf_environment": {
+      "type": "string",
+      "defaultValue": "public",
+      "metadata": {
+        "description": "Terraform azurerm environment (defaults to 'public') see: https://www.terraform.io/docs/language/settings/backends/azurerm.html#environment"
+      }
+    },
+    "mlz_env_name": {
+      "type": "string",
+      "defaultValue": "[concat('mlz', parameters('utcValue'))]",
+      "metadata": {
+        "description": "The location that you're deploying to"
+      }
+    },
+    "hub_sub_id": {
+      "type": "string",
+      "defaultValue": "[parameters('subscription_id')]",
+      "metadata": {
+        "description": "subscription ID for the hub network and resources (defaults to the subscription id)"
+      }
+    },
+    "tier0_sub_id": {
+      "type": "string",
+      "defaultValue": "[parameters('subscription_id')]",
+      "metadata": {
+        "description": "The location that you're deploying to"
+      }
+    },
+    "tier1_sub_id": {
+      "type": "string",
+      "defaultValue": "[parameters('subscription_id')]",
+      "metadata": {
+        "description": "The location that you're deploying to"
+      }
+    },
+    "tier2_sub_id": {
+      "type": "string",
+      "defaultValue": "[parameters('subscription_id')]",
+      "metadata": {
+        "description": "The location that you're deploying to"
+      }
+    },
+    "tier3_sub_id": {
+      "type": "string",
+      "defaultValue": "[parameters('subscription_id')]",
+      "metadata": {
+        "description": "The location that you're deploying to"
+      }
+    },
+    "no_bastion": {
+      "type": "string",
+      "defaultValue": "true",
+      "metadata": {
+        "description": "If any value is present, will not create Bastion Host and Jumpbox VM"
+      }
+    },
+    "no_sentinel": {
+      "type": "string",
+      "defaultValue": "true",
+      "metadata": {
+        "description": "If any value is present, will not create an Azure Sentinel solution"
+      }
+    },
     "utcValue": {
       "type": "string",
       "defaultValue": "[utcNow()]"
@@ -10,7 +87,7 @@
   "resources": [
     {
       "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
-      "name": "mlzuserassigned",
+      "name": "[concat(parameters('utcValue'), 'mlzuserassigned')]",
       "apiVersion": "2018-11-30",
       "location": "[resourceGroup().location]"
     },
@@ -23,25 +100,70 @@
       "identity": {
         "type": "UserAssigned",
         "userAssignedIdentities": {
-          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', 'mlzuserassigned')]": {
+          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', concat(parameters('utcValue'), 'mlzuserassigned'))]": {
           }
         }
       },
       "properties": {
         "forceUpdateTag": "[parameters('utcValue')]",
-        "AzCliVersion": "2.15.0",
+        "azCliVersion": "2.15.0",
         "timeout": "PT30M",
-        "arguments": "'foo' 'bar'",
-        "scriptContent": "result=$(az keyvault list); echo \"arg1 is: $1\"; echo \"arg2 is: $2\"; echo $result | jq -c '{Result: map({id: .id})}' > $AZ_SCRIPTS_OUTPUT_PATH",
+        "environmentVariables":[
+          {
+            "name": "TERRAFORM_VERSION",
+            "value": "1.0.0"
+          },
+          {
+            "name": "subscription_id",
+            "value": "[parameters('subscription_id')]"
+          },
+           {
+            "name": "location",
+            "value": "[parameters('location')]"
+          },
+           {
+            "name": "tf_environment",
+            "value": "[parameters('tf_environment')]"
+          },
+           {
+            "name": "mlz_env_name",
+            "value": "[parameters('mlz_env_name')]"
+          },
+           {
+            "name": "hub_sub_id",
+            "value": "[parameters('hub_sub_id')]"
+          }, {
+            "name": "tier0_sub_id",
+            "value": "[parameters('tier0_sub_id')]"
+          },
+           {
+            "name": "tier1_sub_id",
+            "value": "[parameters('tier1_sub_id')]"
+          },
+            {
+            "name": "tier2_sub_id",
+            "value": "[parameters('tier2_sub_id')]"
+          },
+            {
+            "name": "tier3_sub_id",
+            "value": "[parameters('tier3_sub_id')]"
+          },
+            {
+            "name": "no_bastion",
+            "value": "[parameters('no_bastion')]"
+          },
+            {
+            "name": "no_sentinel",
+            "value": "[parameters('no_sentinel')]"
+          }
+        ],
+        "primaryScriptUri": "https://raw",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', concat(parameters('utcValue'), 'mlzuserassigned'))]"
+      ]
     }
-  ],
-  "outputs": {
-    "result": {
-      "value": "[reference('runBashWithOutputs').outputs]",
-      "type": "object"
-    }
-  }
+  ]
 }
