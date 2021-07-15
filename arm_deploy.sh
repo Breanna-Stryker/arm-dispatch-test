@@ -24,7 +24,7 @@ git clone --quiet https://github.com/Azure/missionlz.git
 cd ./missionlz/src/scripts
 
 # Assemble argument list
-deploy_command="./deploy.sh -s ${subscription_id} -l ${location} -e ${tf_environment} -z ${mlz_env_name} -u ${hub_sub_id} -0 ${tier0_sub_id} -1 ${tier1_sub_id} -2 ${tier2_sub_id} -3 ${tier3_sub_id} -w"
+deploy_command="./deploy.sh -s "${subscription_id}" -l ${mlz_location} -e ${tf_environment} -z ${mlz_env_name} -u ${hub_sub_id} -0 ${tier0_sub_id} -1 ${tier1_sub_id} -2 ${tier2_sub_id} -3 ${tier3_sub_id} -w"
 
 if [[ ${no_bastion} -ne "" ]]; then
     deploy_command+=" --no-bastion"

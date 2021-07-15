@@ -94,7 +94,7 @@
     {
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2020-10-01",
-      "name": "runBashWithOutputs",
+      "name": "[concat('deployMLZ', parameters('utcValue'))]",
       "location": "[resourceGroup().location]",
       "kind": "AzureCLI",
       "identity": {
@@ -118,7 +118,7 @@
             "value": "[parameters('subscription_id')]"
           },
            {
-            "name": "location",
+            "name": "mlz_location",
             "value": "[parameters('location')]"
           },
            {
