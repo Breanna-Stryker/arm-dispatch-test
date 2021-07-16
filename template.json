@@ -11,7 +11,7 @@
     },
     "mlz_location": {
       "type": "string",
-      "defaultValue": "eastus]",
+      "defaultValue": "eastus",
       "metadata": {
         "description": "The location that you're deploying to, defaults to selected resource group location."
       }
