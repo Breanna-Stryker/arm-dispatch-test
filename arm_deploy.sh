@@ -34,5 +34,4 @@ if [[ ${no_sentinel} -ne "" ]]; then
     deploy_command+=" --no-sentinel"
 fi
 
-echo "${deploy_command}" 1>&2;
 eval "${deploy_command}"
