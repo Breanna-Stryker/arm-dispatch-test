@@ -2,6 +2,18 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "service_principal_id": {
+      "type": "string",
+      "metadata": {
+        "description": "A pre-generate service principal with contributor role attached for running the deployment."
+      }
+    },
+    "service_principal_sercret": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The sercret key for the service pincipal you created."
+      }
+    },
     "subscription_id": {
       "type": "string",
       "defaultValue": "[subscription().subscriptionId]",
@@ -95,6 +107,14 @@
           {
             "name": "TERRAFORM_VERSION",
             "value": "1.0.0"
+          },
+          {
+            "name": "env_service_prin",
+            "value": "[parameters('service_principal_id')]"
+          },
+          {
+            "name": "env_service_prin_secret",
+            "value": "[parameters('service_principal_secret')]"
           },
           {
             "name": "subscription_id",

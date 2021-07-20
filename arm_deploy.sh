@@ -21,7 +21,9 @@ rm terraform.zip
 
 # Check out the MLZ Repo
 git clone --quiet https://github.com/Azure/missionlz.git
-cd ./missionlz/src/scripts
+cd ./missionlz/
+git checkout :"breestryker/armsptest"
+cd ./src/scripts
 
 # Assemble argument list
 deploy_command="./deploy.sh -s ${subscription_id} -l ${mlz_location} -e ${tf_environment} -z ${mlz_env_name} -w"
