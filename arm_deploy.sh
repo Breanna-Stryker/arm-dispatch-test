@@ -26,4 +26,11 @@ git checkout "breestryker/armsptest"
 cd ./src/scripts
 
 # Assemble argument list
-./deploy.sh -s "${subscription_id}" -l "${mlz_location}" -e "${tf_environment}" -z "${mlz_env_name}" -w
+az login --service-principal \
+--user "${env_service_prin}" \
+--password="${env_service_prin_secret}" \
+--tenant "$(az account show --query "tenantId" --output tsv)" \
+--allow-no-subscriptions \
+--output json
+
+. deploy.sh -s "${subscription_id}" -l "${mlz_location}" -e "${tf_environment}" -z "${mlz_env_name}" -w
