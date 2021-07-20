@@ -26,14 +26,4 @@ git checkout "breestryker/armsptest"
 cd ./src/scripts
 
 # Assemble argument list
-deploy_command="./deploy.sh -s ${subscription_id} -l ${mlz_location} -e ${tf_environment} -z ${mlz_env_name} -w"
-
-if [[ ${no_bastion} -ne "" ]]; then
-    deploy_command+=" --no-bastion"
-fi    
-
-if [[ ${no_sentinel} -ne "" ]]; then
-    deploy_command+=" --no-sentinel"
-fi
-
-eval "${deploy_command}"
+./deploy.sh -s "${subscription_id}" -l "${mlz_location}" -e "${tf_environment}" -z "${mlz_env_name}" -w
