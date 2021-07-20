@@ -22,7 +22,7 @@ rm terraform.zip
 # Check out the MLZ Repo
 git clone --quiet https://github.com/Azure/missionlz.git
 cd ./missionlz/
-git checkout :"breestryker/armsptest"
+git checkout "breestryker/armsptest"
 cd ./src/scripts
 
 # Assemble argument list
