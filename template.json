@@ -55,11 +55,38 @@
   },
   "resources": [
     {
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "name": "[variables('identityName')]",
+      "apiVersion": "2018-11-30",
+      "location": "[resourceGroup().location]"
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-04-01-preview",
+      "name": "[variables('quickstartRoleAssignmentId')]",
+      "properties": {
+          "roleDefinitionId": "[concat('/subscriptions/', parameters('subscription_id'), '/providers/Microsoft.Authorization/roleDefinitions/', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+          "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName')),'2018-11-30').principalId]",
+          "principalType": "ServicePrincipal",
+          "mode": "Complete"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName'))]"
+      ]
+    },
+    {
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2020-10-01",
       "name": "[concat('deployMLZ', parameters('utcValue'))]",
       "location": "[resourceGroup().location]",
       "kind": "AzureCLI",
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', concat(parameters('utcValue'), 'mlzuserassigned'))]": {
+          }
+        }
+      },
       "properties": {
         "forceUpdateTag": "[parameters('utcValue')]",
         "azCliVersion": "2.15.0",
@@ -97,7 +124,11 @@
         "primaryScriptUri": "https://raw.githubusercontent.com/Breanna-Stryker/arm-dispatch-test/main/arm_deploy.sh",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName'))]",
+        "[resourceId('Microsoft.Authorization/roleAssignments', variables('quickstartRoleAssignmentId'))]"
+      ]
     }
   ]
 }
