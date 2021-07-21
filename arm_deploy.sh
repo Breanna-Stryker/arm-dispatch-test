@@ -28,7 +28,7 @@ cd ./src/scripts
 # Assemble argument list
 az login --service-principal \
 --user "${env_service_prin}" \
---password="${env_service_prin_secret}" \
+--password "${env_service_prin_secret}" \
 --tenant "${$env_tenant_id}" \
 --allow-no-subscriptions \
 --output json
