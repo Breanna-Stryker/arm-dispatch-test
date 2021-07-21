@@ -90,6 +90,10 @@
             "value": "[parameters('service_principal_secret')]"
           },
           {
+            "name": "env_tenant_id",
+            "value": "[subscription().tenantId]"
+          },
+          {
             "name": "subscription_id",
             "value": "[parameters('subscription_id')]"
           },
