@@ -29,7 +29,7 @@ cd ./src/scripts
 az login --service-principal \
 --user "${env_service_prin}" \
 --password "${env_service_prin_secret}" \
---tenant "${$env_tenant_id}" \
+--tenant "${env_tenant_id}" \
 --allow-no-subscriptions \
 --output json
 
