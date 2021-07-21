@@ -33,4 +33,4 @@ az login --service-principal \
 --allow-no-subscriptions \
 --output json
 
-. deploy.sh -s "${subscription_id}" -l "${mlz_location}" -e "${tf_environment}" -z "${mlz_env_name}" -w
+./deploy.sh -s "${subscription_id}" -l "${mlz_location}" -e "${tf_environment}" -z "${mlz_env_name}" -w
