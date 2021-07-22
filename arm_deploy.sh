@@ -15,9 +15,9 @@ error_log() {
 # Prepare the CLI Container with requirements
 
 # Download and Install Terraform
-#wget -O terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-#unzip ./terraform.zip -d /usr/local/bin/
-#rm terraform.zip
+wget -O terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+unzip ./terraform.zip -d /usr/local/bin/
+rm terraform.zip
 
 # Check out the MLZ Repo
 git clone --quiet https://github.com/Azure/missionlz.git
