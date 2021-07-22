@@ -75,7 +75,7 @@
       "properties": {
         "forceUpdateTag": "[parameters('utcValue')]",
         "azCliVersion": "2.15.0",
-        "timeout": "PT30M",
+        "timeout": "PT120M",
         "environmentVariables":[
           {
             "name": "TERRAFORM_VERSION",
