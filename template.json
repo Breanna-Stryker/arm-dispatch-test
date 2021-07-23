@@ -119,7 +119,7 @@
           }
         ],
         "primaryScriptUri": "https://raw.githubusercontent.com/Breanna-Stryker/arm-dispatch-test/main/arm_deploy.sh",
-        "cleanupPreference": "OnSuccess",
+        "cleanupPreference": "OnExpiration",
         "retentionInterval": "P1D"
       }
     }
