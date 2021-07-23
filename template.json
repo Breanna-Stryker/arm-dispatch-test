@@ -61,10 +61,6 @@
       "defaultValue": "[utcNow()]"
     }
   },
-  "variables": {
-    "identityName": "[concat(parameters('utcValue'), 'mlzuserassigned')]",
-    "quickstartRoleAssignmentId": "[guid(concat(subscription().id, 'contributor'))]",
-  },
  "resources": [
     {
       "type": "Microsoft.Resources/deploymentScripts",
